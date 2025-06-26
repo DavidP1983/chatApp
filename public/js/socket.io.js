@@ -1,5 +1,5 @@
 
-const socket = io();
+const socket = io('https://chatapp-api-jrpb.onrender.com');
 
 // По конвенции указываем, что мы работаем с DOM элементами прописывая ($)
 const $btn = document.querySelector('#submit');
