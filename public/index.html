@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;1,400&family=Inter:opsz,wght@14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <title>Join Us</title>
+    <link rel="icon" href="/assets/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <div class="centered-form">
+        <div class="centered-form__box">
+
+            <h1 class="centered-form__title">Join our Chat</h1>
+            <!-- action="./chat.html" -->
+            <form action="./chat.html" class="join-form">
+                <fieldset>
+                    <div class=" join-from__filed">
+                        <label for="name" class="join-form__label">Display Name</label>
+                        <input type="text" id="name" name="username" class="join-form__input" placeholder="Display Name"
+                            required autocomplete="off">
+
+                    </div>
+                    <div class="join-from__choise">
+                        <p>Type your custom room name or select active</p>
+                    </div>
+                    <div class="join-from__filed">
+                        <label for="room" class="join-form__label">Room</label>
+                        <input type="text" id="room" name="room" class="join-form__input" placeholder="Room"
+                            autocomplete="off">
+                    </div>
+
+                    <div class="join-from__file">
+                        <label for="avatar">Choose a profile picture:</label>
+                        <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/webp" />
+                    </div>
+
+                    <div class="join-from__select">
+                        <label for="select" class="join-form__label">Select Active Room</label>
+                        <select name="select" id="select">
+                            <option value="" selected disabled hidden>Select your Room </option>
+                        </select>
+                    </div>
+                </fieldset>
+                <button class="join-form__btn" type="submit">Join Us</button>
+            </form>
+
+        </div>
+    </div>
+
+    <script id="select-options" type="text/html">
+        {{#chat}}
+        <option value={{.}}>{{.}}</option>
+        {{/chat}}
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="js/chat.js" type="module"></script>
+</body>
+
+</html>

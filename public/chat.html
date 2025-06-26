@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;1,400&family=Inter:opsz,wght@14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Chat-App</title>
+    <link rel="icon" href="/assets/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <main class="main">
+
+        <div class="chat">
+
+            <aside class="chat__sidebar">
+
+            </aside>
+
+            <div class="chat__main">
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h1 class="title">Chat App</h1>
+
+                <!-- Данные шаблона будут вставлены в данный тег а именно ul/li -->
+                <div id="messages">
+                    <ul>
+
+                    </ul>
+                    <div class="typing">
+                        <p class="wave-text"><span>.</span><span>.</span><span>.</span></p>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <form id="form" class="form">
+                        <input id="input" autocomplete="off" type="text" name="message" class="form__input"
+                            placeholder="Type your message" />
+                        <button id="submit" type="submit" class="btn">Send</button>
+                    </form>
+                    <button id="send__location" class="btn">Send Location</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Шаблон для сообщений от библиотеки mustache-->
+    <script id="message-template" type="text/html">
+
+            <li class="message">
+                <div class="msg">
+                    <p class="msg__content">
+                        <span class="msg__user">{{username}}</span>
+                        <span class="msg__message">{{message}}</span>
+                    </p>
+                    <i class="material-icons {{status}}">done_all</i>
+                </div>
+                <div class="msg__meta">{{createAt}}</div>
+            </li>
+
+    </script>
+
+    <script id="message-location" type="text/html">
+
+            <li class="message">
+                <div class="msg">
+                    <p class="msg__content">
+                        <span class="msg__user">{{username}}</span>
+                        <span class="msg__message">
+                            <a href={{location}} target="_blank" rel="noopener noreferrer" class="msg">My current location</a>
+                        </span>
+                    </p>
+                    <i class="material-icons {{status}}">done_all</i>
+                </div>
+                <div class="msg__meta">{{createAt}}</div>
+            </li>
+    
+    </script>
+
+
+    <script id="total-users" type="text/html">
+        <div class="close">
+            <span></span><span></span>
+        </div>
+        <h1 class="room">{{room}}</h1>
+        <span class="total">Total users: {{totalUsers}} online</span>
+        <button aria-label="exit button" type="button" class="exit"><i style="font-size:24px" class="fa">&#xf08b;</i></button>
+        <ul>
+            {{#usersInfo}}
+            <li class="chat__item">
+                {{#img}}
+                <img src="{{imgURL}}" alt="avatar" class="avatar">
+                {{/img}}
+
+                {{^img}}
+                    <img src="./assets/avatar.png" alt="avatar" class="avatar">
+                {{/img}}
+                <h2 class="name">{{username}}</h2>
+            </li>
+            {{/usersInfo}}
+        </ul>
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="js/socket.io.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
