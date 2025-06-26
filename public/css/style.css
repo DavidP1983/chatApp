@@ -303,7 +303,7 @@ span {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-image: url('https://files.ably.io/ghost/prod/2023/06/the-ultimate-guide-to-chat-app-architecture.png');
     background-position: center center;
     background-repeat: no-repeat;
