@@ -107,13 +107,11 @@ document.addEventListener('visibilitychange', () => {
 
 // --- Отображение кол-во пользователей в комнате --- //
 
-socket.on('roomData', ({ room, img, imgURL, users }) => {
+socket.on('roomData', ({ room, users }) => {
     const { usersInfo, totalUsers } = users;
     const html = Mustache.render(totalUsersTemplate, {
         usersInfo,
         totalUsers,
-        imgURL,
-        img,
         room
     });
 
@@ -242,10 +240,10 @@ try {
 
 
 // Парсинг параметров url полученные при входе в chat -> ?name=David&room=private
-const { username, room, filename } = Object.fromEntries(new URLSearchParams(location.search));
+const { username, room } = Object.fromEntries(new URLSearchParams(location.search));
 const imgURL = localStorage.getItem(`avatar_${username}`);
 
-socket.emit('join', { username, room, imgURL, filename }, (error) => {
+socket.emit('join', { username, room, imgURL }, (error) => {
     console.log('join');
     if (error) {
         alert(error);

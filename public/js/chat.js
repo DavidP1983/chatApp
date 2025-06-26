@@ -53,7 +53,7 @@ $joinForm.addEventListener('submit', (e) => {
 
         reader.onloadend = function () {
             const avatarKey = `avatar_${username}`;
-            localStorage.setItem(avatarKey, reader.result);
+            localStorage.setItem(avatarKey, file.name ? reader.result : "./assets/avatar.png");
         };
 
         reader.readAsDataURL(elem);
@@ -61,7 +61,7 @@ $joinForm.addEventListener('submit', (e) => {
 
     encodeImageFileAsURL(file);
 
-    window.location.href = `chat.html?username=${encodeURIComponent(username)}&room=${encodeURIComponent(room)}&filename=${encodeURIComponent(file.name)}`;
+    window.location.href = `chat.html?username=${encodeURIComponent(username)}&room=${encodeURIComponent(room)}`;
 
 });
 

@@ -103,13 +103,7 @@
         <ul>
             {{#usersInfo}}
             <li class="chat__item">
-                {{#img}}
                 <img src="{{imgURL}}" alt="avatar" class="avatar">
-                {{/img}}
-
-                {{^img}}
-                    <img src="./assets/avatar.png" alt="avatar" class="avatar">
-                {{/img}}
                 <h2 class="name">{{username}}</h2>
             </li>
             {{/usersInfo}}
