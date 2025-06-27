@@ -12,7 +12,7 @@ const $form = document.querySelector('#form');
 const $formInput = document.querySelector('#input');
 const $btnSendLocation = document.querySelector('#send__location');
 const $typingProcess = document.querySelector('.typing');
-const $loadingStatus = document.querySelector('#loading-indicator');
+const $loadingStatus = document.querySelector('.loading-indicator');
 
 // Templates(mustache) - получаем содержимое шаблона ul/li и вставляем на страницу
 const messageTemplate = document.querySelector('#message-template').innerHTML;
