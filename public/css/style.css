@@ -109,7 +109,22 @@ h5 {
     max-height: 100vh;
 }
 
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.connected {
+    display: none;
+}
+
+.connection {
+    font-weight: 400;
+    font-size: 20px;
+    color: #000;
+}
 
 .title {
     display: block;

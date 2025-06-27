@@ -1,5 +1,10 @@
 
-const socket = io('https://chatapp-api-jrpb.onrender.com');
+const socket = io('https://chatapp-api-jrpb.onrender.com', {
+    transports: ["websocket"],
+    timeout: 10000,
+    reconnectionAttempts: 5,     // Максимум 5 попыток переподключения
+    reconnectionDelay: 2000      // Интервал между попытками (2 секунды)
+});
 
 // По конвенции указываем, что мы работаем с DOM элементами прописывая ($)
 const $btn = document.querySelector('#submit');
@@ -7,6 +12,7 @@ const $form = document.querySelector('#form');
 const $formInput = document.querySelector('#input');
 const $btnSendLocation = document.querySelector('#send__location');
 const $typingProcess = document.querySelector('.typing');
+const $loadingStatus = document.querySelector('#loading-indicator');
 
 // Templates(mustache) - получаем содержимое шаблона ul/li и вставляем на страницу
 const messageTemplate = document.querySelector('#message-template').innerHTML;
@@ -55,9 +61,29 @@ function autoScroll() {
 }
 
 
+// --- Соединение с сервером --- //
+
+socket.on('connect', () => {
+    console.log('Connected');
+    // if ($loadingStatus) $loadingStatus.classList.add('connected');
+});
+
+socket.on("connect_error", (error) => {
+    if (!socket.active) {
+        setTimeout(() => {
+            socket.connect();
+        }, 3000);
+    } else {
+        $loadingStatus.innerHTML = `<p style="color:red;">Server is not responding. Please wait...</p>`;
+    }
+});
+
+
+
 // --- Слушаем события на клиенте --- //
-let userInteracted = false;
-window.addEventListener('click', () => userInteracted = true);
+
+let userInteracted = false;                 // Необходимо для того, чтоб избегать уведомлений от chrome об использовании звуковых сообщений на странице
+window.addEventListener('click', () => userInteracted = true);   // Говорим о том, что пользователь уже взаимодействует со страницей
 
 socket.on('message', ({ msg, username, createAt, readStatus }) => {
     const status = username === 'Admin' || readStatus === 'active' ? 'active' : '';  // Помечаем прочитанные сообщения только от Admin
