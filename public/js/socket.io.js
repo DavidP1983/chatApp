@@ -64,7 +64,7 @@ function autoScroll() {
 // --- Соединение с сервером --- //
 
 socket.on('connect', () => {
-    if ($loadingStatus) $loadingStatus.classList.add('connected');
+    $loadingStatus.classList.add('connected');
 });
 
 socket.on("connect_error", (error) => {
