@@ -1,5 +1,5 @@
 
-const socket = io('https://chatapp-api-jrpb.onrende.com', {
+const socket = io('https://chatapp-api-jrpb.onrender.com', {
     transports: ["websocket"],
     timeout: 10000,
     reconnectionAttempts: 5,     // Максимум 5 попыток переподключения
@@ -73,7 +73,7 @@ socket.on("connect_error", (error) => {
             socket.connect();
         }, 3000);
     } else {
-        $loadingStatus.innerHTML = `<p style="color:red;">Server is not responding. Please wait...</p>`;
+        $loadingStatus.innerHTML = `<p style="color:red; font-weight: 500;">Server is not responding. Please wait...</p>`;
     }
 });
 
