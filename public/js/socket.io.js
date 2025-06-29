@@ -1,5 +1,5 @@
 
-const socket = io('https://chatapp-api-jrpb.onrender.com', {
+export const socket = io('https://chatapp-api-jrpb.onrender.com', {
     transports: ["websocket"],
     timeout: 10000,
     reconnectionAttempts: 5,     // Максимум 5 попыток переподключения
