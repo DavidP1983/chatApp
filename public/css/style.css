@@ -109,61 +109,6 @@ h5 {
     max-height: 100vh;
 }
 
-.loading-indicator {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.spinner {
-    animation: rotate 2s linear infinite;
-    z-index: 2;
-    width: 100px;
-    height: 100px;
-
-
-    .spinner .path {
-        stroke: #1c4595;
-        stroke-linecap: round;
-        animation: dash 1.5s ease-in-out infinite;
-    }
-
-}
-
-@keyframes rotate {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes dash {
-    0% {
-        stroke-dasharray: 1, 150;
-        stroke-dashoffset: 0;
-    }
-
-    50% {
-        stroke-dasharray: 90, 150;
-        stroke-dashoffset: -35;
-    }
-
-    100% {
-        stroke-dasharray: 90, 150;
-        stroke-dashoffset: -124;
-    }
-}
-
-.connected {
-    display: none;
-}
-
-.connection {
-    font-weight: 500;
-    font-size: 20px;
-    color: #000;
-}
-
 .title {
     display: block;
     text-align: center;
@@ -237,12 +182,52 @@ h5 {
             .msg__message {
                 font-weight: 400;
                 color: #000;
+
+                em {
+                    display: block;
+                    margin-top: 10px;
+                    color: gray;
+                }
             }
+        }
+
+        .msg-delete {
+            color: gray;
         }
     }
 
     li:nth-child(even) {
         align-self: flex-end;
+    }
+
+    .msg__actions {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+
+        .msg__delete,
+        .msg__edit {
+            background: inherit;
+            border: none;
+            cursor: pointer;
+        }
+
+        i.fa {
+            color: #000;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .msg__delete .fa.fa-trash-o:hover {
+                color: #af0a0a;
+            }
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .msg__edit .fa.fa-pencil:hover {
+                color: #0aaf3e;
+            }
+        }
+
     }
 }
 

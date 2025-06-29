@@ -32,6 +32,17 @@ function controlDisabledBtn(btn) {
     }
 }
 
+// Процесс очищения формы
+function cleanForm(btn, formInput, form, error) {
+    controlDisabledBtn(btn);
+    formInput.focus();
+    form.reset();
+
+    if (error) {
+        return console.log(error);
+    }
+}
+
 
 // Авто scroll при добавлении нового сообщения
 function autoScroll() {
@@ -78,19 +89,26 @@ socket.on("connect_error", (error) => {
 });
 
 
+// Данная переменная хранит в себе пользователя конкретного окна
+let currentUserName = '';
+
 
 // --- Слушаем события на клиенте --- //
 
 let userInteracted = false;                 // Необходимо для того, чтоб избегать уведомлений от chrome об использовании звуковых сообщений на странице
 window.addEventListener('click', () => userInteracted = true);   // Говорим о том, что пользователь уже взаимодействует со страницей
 
-socket.on('message', ({ msg, username, createAt, readStatus }) => {
+socket.on('message', ({ msg, username, createAt, id, readStatus }) => {
     const status = username === 'Admin' || readStatus === 'active' ? 'active' : '';  // Помечаем прочитанные сообщения только от Admin
+    const userActions = currentUserName === username;                               // только собственник сообщения может иметь кнопки 'delete/edit'
 
     // Вставка сообщений для отображения пользователю
     const html = Mustache.render(messageTemplate, {      // получение данных шаблона ul/li
-        message: msg,
+        message:
+            msg,
         username,
+        id,
+        userActions,
         createAt: moment(createAt).format("MMM h:mm a"),                                     // полученные данные
         status
     });
@@ -103,6 +121,30 @@ socket.on('message', ({ msg, username, createAt, readStatus }) => {
         messageSound.play().catch((err) => console.warn('Can not play sound :', err));
     }
 
+});
+
+
+// --- Отображение отредактированного сообщения --- //
+
+socket.on('messageUpdated', ({ id, msg }) => {
+    const messageEl = document.querySelector(`.message[data-id="${id}"]`);
+    const textEl = messageEl?.querySelector('.msg__message');
+
+    if (textEl) {
+        textEl.innerHTML = `${msg} <em>edited</em>`;
+    }
+    autoScroll();
+});
+
+
+// --- Удаление сообщения --- //
+
+socket.on('messageDeleted', ({ user, id }) => {
+    const parent = document.querySelector(`.message[data-id="${id}"]`);
+    const msg = parent.querySelector('.msg');
+    if (msg) {
+        msg.innerHTML = `<em class="msg-delete"> the message has been deleted by ${user}</em>`;
+    }
 });
 
 
@@ -179,6 +221,7 @@ $form.addEventListener('submit', (e) => {    // №3 Пользователь о
 
     $btn.setAttribute('disabled', true);
 
+    const editingId = document.querySelector('#editing-id').value; // hidden input
     const data = new FormData(e.currentTarget);
 
     const msg = {
@@ -190,19 +233,20 @@ $form.addEventListener('submit', (e) => {    // №3 Пользователь о
         return;
     }
 
-    socket.emit('sendMessage', msg.message, (error) => {     //№4  Сообщение уходит на сервер. Третий аргумент ф-ия, которая оповещает, что сообщение доставлено на сервер. Данная ф-ия принимает аргумент, который содержит информацию о том, что сервер получил сообщение
+    // Корректирование сообщения, если в hidden input у нас есть value
+    if (editingId) {
+        socket.emit('editMessage', { id: editingId, msg: msg.message }, (error) => {
+            document.querySelector('#editing-id').value = '';
+            cleanForm($btn, $formInput, $form, error);
+        });
+    } else {
+        socket.emit('sendMessage', msg.message, (error) => {     //№4  Сообщение уходит на сервер. Третий аргумент ф-ия, которая оповещает, что сообщение доставлено на сервер. Данная ф-ия принимает аргумент, который содержит информацию о том, что сервер получил сообщение
 
-        // Сообщение отправляется и очищаем поле и кнопку
-        controlDisabledBtn($btn);
-        $formInput.focus();
-        $form.reset();
+            // Сообщение отправляется и очищаем поле и кнопку
+            cleanForm($btn, $formInput, $form, error);
 
-        if (error) {
-            return console.log(error);
-        }
-
-        console.log('The message was delivered');
-    });
+        });
+    }
 
 });
 
@@ -267,6 +311,8 @@ try {
 // Парсинг параметров url полученные при входе в chat -> ?name=David&room=private
 const { username, room } = Object.fromEntries(new URLSearchParams(location.search));
 const imgURL = localStorage.getItem(`avatar_${username}`);
+currentUserName = username;
+
 
 socket.emit('join', { username, room, imgURL }, (error) => {
     console.log('join');

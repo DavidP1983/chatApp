@@ -57,6 +57,7 @@
                     <form id="form" class="form">
                         <input id="input" autocomplete="off" type="text" name="message" class="form__input"
                             placeholder="Type your message" />
+                        <input type="hidden" id="editing-id" name="editingId" />
                         <button id="submit" type="submit" class="btn">Send</button>
                     </form>
                     <button id="send__location" class="btn">Send Location</button>
@@ -71,16 +72,23 @@
     <!-- Шаблон для сообщений от библиотеки mustache-->
     <script id="message-template" type="text/html">
 
-            <li class="message">
-                <div class="msg">
-                    <p class="msg__content">
-                        <span class="msg__user">{{username}}</span>
-                        <span class="msg__message">{{message}}</span>
-                    </p>
-                    <i class="material-icons {{status}}">done_all</i>
+        <li class="message"  data-id={{id}}>
+            <div class="msg">
+                <p class="msg__content">
+                    <span class="msg__user">{{username}}</span>
+                    <span class="msg__message">{{message}}</span>
+                </p>
+                <i class="material-icons {{status}}">done_all</i>
+                {{#userActions}}
+                <div class="msg__actions">
+                    <button class="msg__delete"><i class="fa fa-trash-o" style="font-size:24px;"></i></button>
+                    <button class="msg__edit"><i class="fa fa-pencil" style="font-size:24px;"></i></button>
                 </div>
-                <div class="msg__meta">{{createAt}}</div>
-            </li>
+                {{/userActions}}
+
+            </div>
+            <div class="msg__meta">{{createAt}}</div>
+        </li>
 
     </script>
 
@@ -125,7 +133,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
     <script src="https://chatapp-api-jrpb.onrender.com/socket.io/socket.io.js"></script>
     <script type="module" src="js/socket.io.js"></script>
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 
 </body>
 
